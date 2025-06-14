@@ -4,7 +4,7 @@
 
 Welcome to **Jarvis**: your locally-running, privacy-respecting voice assistant. Built in pure C++ and powered by the open-source legends of `llama.cpp`, `whisper.cpp`, and `piper-tts`, this project aims to put a miniature Iron Man-style AI on your Linux box.
 
----
+
 
 ## 🤖 Features
 
@@ -23,15 +23,19 @@ Welcome to **Jarvis**: your locally-running, privacy-respecting voice assistant
 - 🚀 Runs fine on Arch (btw)
     
 
----
 
-## 🏗️ Project Structure
 
-text
+## 🗂️ Project Structure
 
-`jarvis/ ├── src/         # C++ source files ├── include/     # C++ header files ├── setup.sh     # Installs everything ├── buildMe.sh   # Compiles Jarvis ├── testMe.sh    # Runs a quick health check └── bin/         # Compiled Jarvis lives here`
+| Path         | Description                                    |
+| ------------ | ---------------------------------------------- |
+| `src/`       | C++ source files                               |
+| `include/`   | C++ header files                               |
+| `setup.sh`   | Installs all dependencies and downloads models |
+| `buildMe.sh` | Compiles Jarvis using CMake                    |
+| `testMe.sh`  | Runs a quick health check                      |
+| `bin/`       | Compiled Jarvis binary lives here              |
 
----
 
 ## 📦 Under the Hood
 
@@ -45,7 +49,7 @@ text
 
 Everything runs locally. No GPU? No problem. No cloud? Even better.
 
----
+
 
 ## 🔮 Roadmap
 
@@ -60,29 +64,32 @@ Everything runs locally. No GPU? No problem. No cloud? Even better.
 - Self-destruct command (don’t worry, it only wipes the repo... probably)
     
 
----
 
 ## 🧪 How to Summon Jarvis
 
-bash
 
-`sudo ./setup.sh      # Installs all dependencies and fetches models sudo ./testMe.sh     # Runs checks to make sure everything is installed sudo ./buildMe.sh    # Compiles the beast`
+   ```
+   sudo ./setup.sh      # Installs all dependencies and fetches models 
+   sudo ./testMe.sh     # Runs checks to make sure everything is installed
+   sudo ./buildMe.sh    # Compiles the beast
+```
+
 
 🟢 If everything worked, you'll find the executable in `./bin/jarvis`.
 
 Then:
 
-bash
-
-`cd bin ./llama-server -m ../models/Meta-Llama-3.1-8B-Instruct.Q4_0.gguf  # to run the server`
+```
+cd bin
+./llama-server -m ../models/Meta-Llama-3.1-8B-Instruct.Q4_0.gguf  # to run the server
+```
 
 And in another terminal:
 
-bash
+```
+./jarvis
+```
 
-`./jarvis`
-
----
 
 ## 🧙 Summoning Ritual Complete
 
@@ -90,7 +97,7 @@ Thanks for checking out Jarvis. Contributions, feedback, and evil plans welcome.
 
 > “Sometimes you just need a voice in your head. Preferably one that compiles.”
 
----
+
 
 ## ⚠️ Known Limitations
 
@@ -99,19 +106,21 @@ Thanks for checking out Jarvis. Contributions, feedback, and evil plans welcome.
 - Doesn’t actually make coffee or destroy the world... yet
     
 
----
+
 ## 🧩 External Libraries
 
 Jarvis relies on several amazing open-source projects:
 
-- [`llama.cpp`](https://github.com/ggerganov/llama.cpp) — Local LLM inference engine
+- [`llama.cpp`](https://github.com/ggml-org/llama.cpp) — Local LLM inference engine
     
 - [`whisper.cpp`](https://github.com/ggerganov/whisper.cpp) — Offline speech recognition
     
 - [`piper`](https://github.com/rhasspy/piper) — Text-to-speech synthesis
 
----
 
-> **Disclaimer:** Not the real Iron Man’s Jarvis—mine consumes more memory, and is 100% open-source. No billionaire genius required!
 
----
+  
+## **Disclaimer:** 
+ -Not the real Iron Man’s Jarvis—mine consumes more memory and is 100% open-source. No billionaire genius required!
+
+
