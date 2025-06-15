@@ -84,22 +84,38 @@ mkdir -p "$BIN_DIR"
 mkdir -p "$MODELS_DIR"
 mkdir -p "$TEMP_DIR"
 
-# List of required packages
-REQUIRED_PKGS=(git make curl wget portaudio alsa-utils cmake ffmpeg espeak-ng)
 
-# Function to check and install missing packages
-install_missing_packages() {
-    for pkg in "${REQUIRED_PKGS[@]}"; do
-        if ! pacman -Qi "$pkg" &>/dev/null; then
-            info "Installing missing package: $pkg"
-            pacman -Sy --noconfirm "$pkg" || { error "Failed to install $pkg. Please check your internet connection or package name."; exit 1; }
-        else
-            warn "$pkg is already installed."
-        fi
-    done
+# Detect distro and install packages
+install_dependencies() {
+    if command -v pacman &>/dev/null; then
+        info "Detected Arch Linux"
+        sudo pacman -S --noconfirm git gcc make curl wget portaudio alsa-utils cmake ffmpeg espeak-ng || {
+            error "Pacman failed to install packages"; exit 1; }
+    
+    elif command -v apt &>/dev/null; then
+        info "Detected Debian/Ubuntu"
+        sudo apt update && sudo apt install -y git g++ make curl wget portaudio19-dev alsa-utils cmake ffmpeg espeak-ng || {
+            error "APT failed to install packages"; exit 1; }
+    
+    elif command -v dnf &>/dev/null; then
+        info "Detected Fedora"
+        sudo dnf install -y git gcc-c++ make curl wget portaudio-devel alsa-utils cmake ffmpeg espeak-ng || {
+            error "DNF failed to install packages"; exit 1; }
+
+    elif command -v zypper &>/dev/null; then
+        info "Detected openSUSE"
+        sudo zypper install -y git gcc-c++ make curl wget portaudio-devel alsa-utils cmake ffmpeg espeak-ng || {
+            error "Zypper failed to install packages"; exit 1; }
+
+    else
+        error "Unsupported or unknown package manager."
+        exit 1
+    fi
+
+    success "All dependencies installed."
 }
 
-install_missing_packages
+install_dependencies
 
 
 # --- Helper function for downloading ---
@@ -187,16 +203,16 @@ success "piper binary copied to $BIN_DIR"
 
 echo ""
 info "Downloading Piper voice model and config..."
-#download_file "$PIPER_MODEL_URL" "$MODELS_DIR/en_US-lessac-high.onnx"
-#download_file "$PIPER_CONFIG_URL" "$MODELS_DIR/en_US-lessac-high.onnx.json"
+download_file "$PIPER_MODEL_URL" "$MODELS_DIR/en_US-lessac-high.onnx"
+download_file "$PIPER_CONFIG_URL" "$MODELS_DIR/en_US-lessac-high.onnx.json"
 
 echo ""
 info "Downloading Whisper base.en model..."
-#download_file "$WHISPER_MODEL_URL" "$MODELS_DIR/ggml-base.en.bin"
+download_file "$WHISPER_MODEL_URL" "$MODELS_DIR/ggml-base.en.bin"
 
 echo ""
 info "Downloading Llama 3.1 8B Instruct GGUF model (Q4_K_M quantization)..."
-#download_file "$LLAMA_MODEL_URL" "$MODELS_DIR/Meta-Llama-3.1-8B-Instruct.Q4_0.gguf"
+download_file "$LLAMA_MODEL_URL" "$MODELS_DIR/Meta-Llama-3.1-8B-Instruct.Q4_0.gguf"
 
 
 
